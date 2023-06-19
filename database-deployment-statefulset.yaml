@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database
+spec:
+  selector:
+    matchLabels:
+      app: database
+  serviceName: database-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: database
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database.password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: database.name
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: database-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: database-persistent-storage
+          persistentVolumeClaim:
+            claimName: database-pvc

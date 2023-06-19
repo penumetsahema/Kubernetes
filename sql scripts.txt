@@ -1,0 +1,52 @@
+------------------ scripts for demo
+kubectl exec -it database-0 -- /bin/bash
+
+mysql -u root -p
+mysql -u hemakalidindi -p Employ
+
+------------------------------
+
+CREATE USER 'hemakalidindi'@'%' IDENTIFIED BY 'Hemakalidindi143*';
+GRANT ALL PRIVILEGES ON Employ.* TO 'hemakalidindi'@'%';
+FLUSH PRIVILEGES;
+
+USE Employ;
+CREATE TABLE Employees (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50),
+  age INT
+);
+
+---------------------------
+
+INSERT INTO Employees (name, age) VALUES ('Prabhas', 25);
+INSERT INTO Employees (name, age) VALUES ('Satish', 30);
+INSERT INTO Employees (name, age) VALUES ('Mokshitha', 22);
+INSERT INTO Employees (name, age) VALUES ('Kittu', 28);
+INSERT INTO Employees (name, age) VALUES ('Nandana', 32);
+INSERT INTO Employees (name, age) VALUES ('Abhiram', 27);
+INSERT INTO Employees (name, age) VALUES ('Aryan', 40);
+INSERT INTO Employees (name, age) VALUES ('Hema', 22);
+INSERT INTO Employees (name, age) VALUES ('Ranbir', 38);
+INSERT INTO Employees (name, age) VALUES ('Karthik', 31);
+
+Select * from Employees;
+
+--------------------- If required not for demo
+Get into pod:
+kubectl exec -it database-0 -- /bin/bash
+
+Commands to connect to database:
+mysql -u your_username -p your_database
+mysql -u hemakalidindi -p Employ
+mysql -u root -p
+
+--------------------
+
+CREATE DATABASE Employ;
+CREATE USER 'hemakalidindi'@'%' IDENTIFIED BY 'Hemakalidindi143*';
+GRANT ALL PRIVILEGES ON Employ.* TO 'hemakalidindi'@'%';
+FLUSH PRIVILEGES;
+
+----------------------
+

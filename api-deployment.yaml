@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: service-api
+  template:
+    metadata:
+      labels:
+        app: service-api
+    spec:
+      containers:
+        - name: service-api
+          image: penumetsahema/python-image:8
+          ports:
+            - containerPort: 3010
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: database.host
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: database.port
+            - name: DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: database.name
+            - name: DATABASE_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: database.user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: database.password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-api-service
+spec:
+  selector:
+    app: service-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3010
+  type: LoadBalancer
